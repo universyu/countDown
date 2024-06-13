@@ -12,3 +12,7 @@
 .container h1{
     margin: 0;
 }
+.container input{
+    border: black 1px solid;
+    outline: none;
+}
