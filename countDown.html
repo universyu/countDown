@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Countdown</title>
+    <link rel="stylesheet" href="reset.css">
+</head>
+<body>
+<div class="container">
+    <h1>Phase One</h1>
+    <h1 id="countdown">2500:00</h1>
+    <input type="text" id="time" onkeydown=handleEnter>
+    <button onclick="reduceTime()">Reduce Time</button>
+</div>
+
+
+<script>
+    var totalHours = localStorage.getItem('totalHours') ? parseInt(localStorage.getItem('totalHours')) : 2500 * 60 * 60; // Convert hours to seconds
+    var countdownElement = document.getElementById('countdown');
+
+    function reduceTime() {
+        var timeToReduce = document.getElementById('time').value;
+        var hoursToReduce = timeToReduce.match(/(\d+)h/);
+        var minutesToReduce = timeToReduce.match(/(\d+)m/);
+
+        if (hoursToReduce) {
+            totalHours -= parseInt(hoursToReduce[1]) * 60 * 60; // Convert hours to seconds
+        }
+
+        if (minutesToReduce) {
+            totalHours -= parseInt(minutesToReduce[1]) * 60; // Convert minutes to seconds
+        }
+
+        localStorage.setItem('totalHours', totalHours);
+        updateCountdown();
+    }
+
+    function updateCountdown() {
+        var minutes = Math.floor(totalHours / 60) % 60;
+        var hours = Math.floor(totalHours / 60 / 60);
+
+        countdownElement.innerText = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+        document.getElementById('time').value = '';
+    }
+
+    function handleEnter(e){
+        if(e.key==='Enter'){
+            reduceTime();
+        }
+    }
+    updateCountdown();
+</script>
+</body>
+</html>
